@@ -9,8 +9,8 @@ use super::verify::{
     ensure_import_has_no_unowned_source, verify_imported_manifest, verify_owned_file,
 };
 use super::walk::{
-    classify_path, deepest_first, is_reserved_state_path, native_path, openspec_root,
-    reject_symlink, walk_regular_files,
+    classify_path, deepest_first, is_reserved_state_path, native_path, openspec_destination,
+    openspec_source, reject_symlink, walk_regular_files,
 };
 use super::{Classification, INTEROP_DIRECTORY, LOCK_FILE, MIRROR_DIRECTORY, io_error};
 use crate::error::{Error, ErrorKind};
@@ -44,7 +44,7 @@ pub(super) fn preflight_import(spec_root: &SpecRoot) -> Result<ConversionPlan, E
         });
     }
 
-    let openspec = openspec_root(spec_root);
+    let openspec = openspec_source(spec_root);
     if !openspec.exists() {
         return Err(Error::new(
             ErrorKind::Config,
@@ -135,7 +135,7 @@ pub(super) fn preflight_export(spec_root: &SpecRoot) -> Result<ConversionPlan, E
     } else {
         manifest_from_native_trees(spec_root)?
     };
-    let destination_root = openspec_root(spec_root);
+    let destination_root = openspec_destination(spec_root);
     reject_symlink(&destination_root)?;
     let mut writes = Vec::new();
     let mut removals = Vec::new();

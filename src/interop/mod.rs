@@ -27,7 +27,7 @@ use std::fs;
 use std::io;
 use std::path::Path;
 use verify::{verify_exported_manifest, verify_imported_manifest};
-use walk::{classify_path, is_reserved_state_path, openspec_root, walk_regular_files};
+use walk::{classify_path, is_reserved_state_path, openspec_destination, walk_regular_files};
 
 use transaction::{LOCK_FILE, TRANSACTION_DIRECTORY};
 
@@ -140,7 +140,7 @@ fn export_openspec_with_io<I: TransactionIo>(
     {
         return Ok(ConversionReport {
             converted,
-            destination: openspec_root(&spec_root).display().to_string(),
+            destination: openspec_destination(&spec_root).display().to_string(),
             recovered: true,
         });
     }

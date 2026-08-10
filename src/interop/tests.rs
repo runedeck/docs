@@ -448,22 +448,18 @@ fn custom_and_openspec_selected_roots_preserve_ownership() {
 }
 
 #[test]
-fn nested_openspec_selected_root_exports_in_place_without_a_root_mirror() {
+fn nested_openspec_selected_root_imports_the_legacy_tree_and_exports_in_place() {
     let repository = TempDir::new().unwrap();
     configure_spec_root(repository.path(), "docs/openspec");
-    write_bytes(
-        repository.path(),
-        "docs/openspec/changes/add-widget/proposal.md",
-        b"# Widget proposal\n",
-    );
-    write_bytes(
-        repository.path(),
-        "docs/openspec/specs/widgets/spec.md",
-        b"# Widget specification\n",
-    );
-    write_bytes(repository.path(), "docs/openspec/project.md", PROJECT);
+    seed_openspec(repository.path());
 
     import_openspec(&repository.path().to_string_lossy(), true).unwrap();
+    assert!(
+        repository
+            .path()
+            .join("docs/openspec/changes/add-widget/proposal.md")
+            .is_file()
+    );
     assert!(
         repository
             .path()

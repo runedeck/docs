@@ -153,7 +153,15 @@ pub(super) fn is_reserved_state_path(relative: &str) -> bool {
         || relative.starts_with(&format!("{INTEROP_DIRECTORY}/"))
 }
 
-pub(super) fn openspec_root(spec_root: &SpecRoot) -> PathBuf {
+/// Import reads the conventional root-level tree so a legacy `openspec/`
+/// layout can migrate into any configured root, including a nested one.
+pub(super) fn openspec_source(spec_root: &SpecRoot) -> PathBuf {
+    spec_root.repository().join("openspec")
+}
+
+/// Export lands in the configured tree when it is already `OpenSpec` layout,
+/// so no root-level mirror appears beside a nested canonical root.
+pub(super) fn openspec_destination(spec_root: &SpecRoot) -> PathBuf {
     if spec_root.layout() == SpecLayout::OpenSpec {
         spec_root.base().to_path_buf()
     } else {
