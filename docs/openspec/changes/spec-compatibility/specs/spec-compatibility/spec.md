@@ -30,7 +30,7 @@ Shared artifacts SHALL remain valid for the pinned OpenSpec compatibility baseli
 
 ### Requirement: Rune-Namespaced Extensions
 
-A Rune-specific artifact or runtime file SHALL enter the shared tree only when it uses an OpenSpec-defined field, is additive content OpenSpec preserves unchanged, or lives in a Rune-namespaced path that OpenSpec ignores and Rune validation excludes from OpenSpec compatibility claims; Rune transaction runtime state SHALL remain gitignored.
+A Rune-specific artifact or runtime file SHALL enter the shared tree only when it uses an OpenSpec-defined field, is additive content OpenSpec preserves unchanged, or lives in a Rune-namespaced path that OpenSpec ignores and Rune validation excludes from OpenSpec compatibility claims; Rune runtime state (the transaction journal, the archive lock, and the `.interop/` recovery mirror) SHALL remain gitignored.
 
 #### Scenario: Runtime state stays untracked
 

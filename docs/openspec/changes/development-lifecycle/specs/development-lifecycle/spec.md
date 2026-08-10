@@ -1,7 +1,3 @@
-## Purpose
-
-Defines the portable, review-driven development lifecycle that carries a Rune change from specification through decisions, implementation, testing, review, and deployment.
-
 ## ADDED Requirements
 
 ### Requirement: Changes advance through reviewed lifecycle phases

@@ -93,10 +93,12 @@ pub(super) fn resolve_with_config(
         None => shared::autodetect_relative_root(&repository),
     }
     .map_err(config_error)?;
-    let layout = match relative.to_str() {
-        Some("docs") => SpecLayout::Native,
-        Some("openspec") => SpecLayout::OpenSpec,
-        Some(_) | None => SpecLayout::Custom,
+    let layout = if relative == Path::new("docs") {
+        SpecLayout::Native
+    } else if relative.file_name().is_some_and(|name| name == "openspec") {
+        SpecLayout::OpenSpec
+    } else {
+        SpecLayout::Custom
     };
     let base = confined_destination(&repository, &repository.join(&relative))?;
     if base.exists() && !base.is_dir() {

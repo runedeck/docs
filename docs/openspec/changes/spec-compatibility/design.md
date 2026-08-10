@@ -101,7 +101,7 @@ A Rune-specific extension must satisfy one of these conditions:
 - It is additive content that OpenSpec preserves unchanged.
 - It is stored in a Rune-namespaced path that OpenSpec ignores and Rune's validation excludes from OpenSpec compatibility claims.
 
-Rune transaction runtime state uses the Rune-namespaced condition. The `TRANSACTION_DIRECTORY`, `JOURNAL_FILE`, and `LOCK_FILE` constants in Rune's transaction module define the exact paths as `docs/openspec/.rune-transaction/journal.yaml` and `docs/openspec/.rune-archive.lock`. They are runtime state, not shared artifacts, and remain gitignored.
+Rune runtime state uses the Rune-namespaced condition. The `TRANSACTION_DIRECTORY`, `JOURNAL_FILE`, and `LOCK_FILE` constants in Rune's transaction module define the exact paths as `docs/openspec/.rune-transaction/journal.yaml` and `docs/openspec/.rune-archive.lock`, and the interop module's `INTEROP_DIRECTORY` and `MIRROR_DIRECTORY` constants place recovery-conversion state under `docs/openspec/.interop/`. All of it is runtime state, not shared artifacts, and remains gitignored.
 
 Repository rollout is blocked until the pinned OpenSpec validator and interactive view tolerate both paths, including a persistent interrupted-operation journal. If OpenSpec does not safely ignore them, a separate design moves Rune runtime state outside the shared tree while preserving locking and recovery semantics.
 
@@ -111,7 +111,7 @@ Compatibility is demonstrated by running both CLIs against the same files, not b
 
 ### Recovery import and export
 
-RuneSpec import and export remain production recovery tools. They can inspect, restore, or compare external layouts, but the normal repository workflow does not invoke them and does not generate a second canonical tree.
+RuneSpec import and export remain production recovery tools. They can inspect, restore, or compare external layouts, but the normal repository workflow does not invoke them and does not generate a second canonical tree. Conversion destinations resolve through the configured spec root: a tree already in OpenSpec layout is its own destination, so export never writes a root-level mirror beside it.
 
 No migration command is required for repository rollout. Existing compatible specifications and changes move into `docs/openspec/` without content transformation, then both validators check the moved files.
 

@@ -1,7 +1,3 @@
-## Purpose
-
-Defines decision artifacts within the OpenSpec canon and their publication as durable architecture decision records.
-
 ## ADDED Requirements
 
 ### Requirement: Changes declare their decisions

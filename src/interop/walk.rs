@@ -6,7 +6,7 @@
 use super::manifest::{manifest_path_error, validated_relative};
 use super::{Classification, INTEROP_DIRECTORY, MIRROR_DIRECTORY, TRANSACTION_DIRECTORY, io_error};
 use crate::error::{Error, ErrorKind};
-use crate::spec::SpecRoot;
+use crate::spec::{SpecLayout, SpecRoot};
 use std::fs;
 use std::io;
 use std::path::{Component, Path, PathBuf};
@@ -154,7 +154,11 @@ pub(super) fn is_reserved_state_path(relative: &str) -> bool {
 }
 
 pub(super) fn openspec_root(spec_root: &SpecRoot) -> PathBuf {
-    spec_root.repository().join("openspec")
+    if spec_root.layout() == SpecLayout::OpenSpec {
+        spec_root.base().to_path_buf()
+    } else {
+        spec_root.repository().join("openspec")
+    }
 }
 
 /// Twin of `transaction::reject_symlink`, kept separate so errors name the
