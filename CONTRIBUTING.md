@@ -25,7 +25,7 @@ Types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`.
 3. `make validate`
 4. Open a PR against `main` **as a draft**, and mark it ready when the tree is stable
 
-CI runs validation on every PR. Automated review lanes run for same-repository branches; a fork pull request is owner-reviewed. The `main` branch requires passing CI before merge. The body carries a `## Release Notes` section (`- N/A` when nothing is user-facing). Write PR text the way a diff summarizer would: verb-first, factual, file-anchored bullets, claims the diff upholds, no narrative.
+CI runs validation on every PR. The `main` branch requires passing CI before merge. The body carries a `## Release Notes` section (`- N/A` when nothing is user-facing). Write PR text the way a diff summarizer would: verb-first, factual, file-anchored bullets, claims the diff upholds, no narrative.
 
 ## Review etiquette
 
@@ -33,4 +33,4 @@ Iterate in draft, collect fixes locally, push them as one batch, and request a f
 
 ## Review bots
 
-A same-repository pull request opened ready for review starts its first cascade automatically; every later round is summoned by label. Bare `review` runs the cascade: cursor, then macroscope, then the adjudicating correctness lane. `review:runeseer`, `review:macroscope`, and `review:autofix` summon a single lane. A round consumes its labels when it ends, and every round is visible in the pull request timeline. A fork pull request starts no lane; its required correctness check greens only when runeseer's latest review approves that exact head, which no automated path produces for forks, so the owner reviews fork changes directly and merges them through the owner-veto path.
+A same-repository pull request opened ready for review starts its first cascade automatically; every later round is summoned by label. Bare `review` runs the cascade: cursor, then macroscope, then the adjudicating correctness lane. `review:runeseer`, `review:macroscope`, and `review:autofix` summon a single lane. A round consumes its labels when it ends, and every round is visible in the pull request timeline. A fork pull request starts nothing on its own; the owner may summon the free lanes with the review label, the correctness lane refuses fork heads, and the pull request merges through the owner's bypass once the free lanes settle clean.
