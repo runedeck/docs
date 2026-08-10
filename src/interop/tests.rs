@@ -447,6 +447,34 @@ fn custom_and_openspec_selected_roots_preserve_ownership() {
     );
 }
 
+#[test]
+fn nested_openspec_selected_root_imports_the_legacy_tree_and_exports_in_place() {
+    let repository = TempDir::new().unwrap();
+    configure_spec_root(repository.path(), "docs/openspec");
+    seed_openspec(repository.path());
+
+    import_openspec(&repository.path().to_string_lossy(), true).unwrap();
+    assert!(
+        repository
+            .path()
+            .join("docs/openspec/changes/add-widget/proposal.md")
+            .is_file()
+    );
+    assert!(
+        repository
+            .path()
+            .join("docs/openspec/.interop/openspec/files/project.md")
+            .is_file()
+    );
+
+    export_openspec(&repository.path().to_string_lossy(), true).unwrap();
+    assert_eq!(
+        fs::read(repository.path().join("docs/openspec/project.md")).unwrap(),
+        PROJECT
+    );
+    assert!(!repository.path().join("openspec").exists());
+}
+
 #[derive(Default)]
 struct FailAfterDestinationsComplete;
 

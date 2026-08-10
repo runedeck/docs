@@ -1,0 +1,3 @@
+schema: spec-driven
+created: 2026-08-10
+goal: Bind RuneSpec and OpenSpec to one canonical artifact tree per repository

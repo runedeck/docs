@@ -5,7 +5,8 @@
 
 use super::manifest::{Manifest, manifest_path, validate_manifest};
 use super::walk::{
-    is_reserved_state_path, native_path, openspec_root, reject_symlink, walk_regular_files,
+    is_reserved_state_path, native_path, openspec_destination, openspec_source, reject_symlink,
+    walk_regular_files,
 };
 use super::{Classification, LOCK_FILE, MIRROR_DIRECTORY, io_error};
 use crate::error::{Error, ErrorKind};
@@ -54,7 +55,7 @@ pub(super) fn verify_exported_manifest(
     spec_root: &SpecRoot,
     manifest: &Manifest,
 ) -> Result<(), Error> {
-    let openspec = openspec_root(spec_root);
+    let openspec = openspec_destination(spec_root);
     for entry in &manifest.entries {
         verify_owned_file(&openspec.join(Path::new(&entry.path)), &entry.sha256)?;
     }
@@ -65,7 +66,7 @@ pub(super) fn ensure_import_has_no_unowned_source(
     spec_root: &SpecRoot,
     manifest: &Manifest,
 ) -> Result<(), Error> {
-    let openspec = openspec_root(spec_root);
+    let openspec = openspec_source(spec_root);
     if !openspec.exists() {
         return Ok(());
     }

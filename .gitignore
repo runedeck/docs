@@ -18,9 +18,11 @@ Cargo.lock
 .cursor/*
 !.cursor/BUGBOT.md
 
-# RuneSpec transaction runtime state inside the shared lifecycle tree.
+# RuneSpec runtime state inside the shared lifecycle tree: transaction
+# journal, archive lock, and interop recovery mirror.
 .rune-archive.lock
 .rune-transaction/
+.interop/
 
 # Parallel work, one isolated tree per agent: jj workspaces where the repo is
 # colocated, git worktrees where it is git-only. Both are ignored before any

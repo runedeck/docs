@@ -6,7 +6,7 @@
 use super::manifest::{manifest_path_error, validated_relative};
 use super::{Classification, INTEROP_DIRECTORY, MIRROR_DIRECTORY, TRANSACTION_DIRECTORY, io_error};
 use crate::error::{Error, ErrorKind};
-use crate::spec::SpecRoot;
+use crate::spec::{SpecLayout, SpecRoot};
 use std::fs;
 use std::io;
 use std::path::{Component, Path, PathBuf};
@@ -153,8 +153,20 @@ pub(super) fn is_reserved_state_path(relative: &str) -> bool {
         || relative.starts_with(&format!("{INTEROP_DIRECTORY}/"))
 }
 
-pub(super) fn openspec_root(spec_root: &SpecRoot) -> PathBuf {
+/// Import reads the conventional root-level tree so a legacy `openspec/`
+/// layout can migrate into any configured root, including a nested one.
+pub(super) fn openspec_source(spec_root: &SpecRoot) -> PathBuf {
     spec_root.repository().join("openspec")
+}
+
+/// Export lands in the configured tree when it is already `OpenSpec` layout,
+/// so no root-level mirror appears beside a nested canonical root.
+pub(super) fn openspec_destination(spec_root: &SpecRoot) -> PathBuf {
+    if spec_root.layout() == SpecLayout::OpenSpec {
+        spec_root.base().to_path_buf()
+    } else {
+        spec_root.repository().join("openspec")
+    }
 }
 
 /// Twin of `transaction::reject_symlink`, kept separate so errors name the
