@@ -33,4 +33,4 @@ Iterate in draft, collect fixes locally, push them as one batch, and request a f
 
 ## Review bots
 
-Review rounds are summoned, never automatic. Bare `review` runs the cascade: cursor, then macroscope, then the adjudicating correctness lane. `review:runeseer`, `review:macroscope`, and `review:autofix` summon a single lane. A round consumes its labels when it ends, and every round is visible in the pull request timeline.
+A same-repository pull request opened ready for review starts its first cascade automatically; every later round is summoned by label. Bare `review` runs the cascade: cursor, then macroscope, then the adjudicating correctness lane. `review:runeseer`, `review:macroscope`, and `review:autofix` summon a single lane. A round consumes its labels when it ends, and every round is visible in the pull request timeline. A fork pull request starts nothing on its own; the owner may summon the free lanes with the review label, the correctness lane refuses fork heads, and the pull request merges through the owner's bypass once the free lanes settle clean.
