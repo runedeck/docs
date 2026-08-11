@@ -67,6 +67,15 @@ fn layouts_follow_the_resolved_relative_root() {
         SpecLayout::OpenSpec
     );
 
+    let nested_openspec = TempDir::new().unwrap();
+    fs::create_dir_all(nested_openspec.path().join("docs/openspec/changes")).unwrap();
+    assert_eq!(
+        resolve_with_config(nested_openspec.path(), Some("docs/openspec"))
+            .unwrap()
+            .layout(),
+        SpecLayout::OpenSpec
+    );
+
     let custom = TempDir::new().unwrap();
     assert_eq!(
         resolve_with_config(custom.path(), Some("artifacts/specifications"))

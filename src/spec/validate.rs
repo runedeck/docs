@@ -368,22 +368,30 @@ fn append_unique_diagnostics(diagnostics: &mut Vec<SpecViolation>, incoming: Vec
     }
 }
 
+// The tree's root config.yaml is the OpenSpec CLI's own configuration, an
+// OpenSpec-defined artifact rather than opaque content; interop still
+// mirrors it like any other file.
 fn append_opaque_artifacts(spec_root: &SpecRoot, diagnostics: &mut Vec<SpecViolation>) {
     match crate::interop::opaque_artifacts(spec_root) {
-        Ok(artifacts) => diagnostics.extend(artifacts.into_iter().map(|artifact| SpecViolation {
-            code: "opaque-artifact".to_string(),
-            severity: DiagnosticSeverity::Warning,
-            path: artifact.path,
-            line: None,
-            column: None,
-            message: format!(
-                "opaque OpenSpec artifact classified as {}",
-                artifact.classification.name()
-            ),
-            operation: None,
-            capability: None,
-            change: None,
-        })),
+        Ok(artifacts) => diagnostics.extend(
+            artifacts
+                .into_iter()
+                .filter(|artifact| artifact.path != "config.yaml")
+                .map(|artifact| SpecViolation {
+                    code: "opaque-artifact".to_string(),
+                    severity: DiagnosticSeverity::Warning,
+                    path: artifact.path,
+                    line: None,
+                    column: None,
+                    message: format!(
+                        "opaque OpenSpec artifact classified as {}",
+                        artifact.classification.name()
+                    ),
+                    operation: None,
+                    capability: None,
+                    change: None,
+                }),
+        ),
         Err(error) => diagnostics.push(SpecViolation {
             code: "artifact-invalid".to_string(),
             severity: DiagnosticSeverity::Error,

@@ -141,7 +141,8 @@ pub fn doctor_output(source: &str) -> Result<SpecDoctorOutput, Error> {
     }
 
     if spec_root.layout() == SpecLayout::OpenSpec {
-        findings.extend(openspec_cross_check(root));
+        let discovery_root = spec_root.base().parent().unwrap_or(root);
+        findings.extend(openspec_cross_check(discovery_root));
     }
 
     Ok(SpecDoctorOutput {
