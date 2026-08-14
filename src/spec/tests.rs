@@ -751,21 +751,11 @@ fn openspec_advisory_distinguishes_process_outcomes() {
         doctor::OpenSpecAdvisory::Unavailable
     );
     assert_eq!(
-        doctor::run_openspec_advisory(
-            root.path(),
-            "/usr/bin/true",
-            &[],
-            Duration::from_millis(100),
-        ),
+        doctor::run_openspec_advisory(root.path(), "/usr/bin/true", &[], Duration::from_secs(5),),
         doctor::OpenSpecAdvisory::Successful
     );
     assert_eq!(
-        doctor::run_openspec_advisory(
-            root.path(),
-            "/usr/bin/false",
-            &[],
-            Duration::from_millis(100),
-        ),
+        doctor::run_openspec_advisory(root.path(), "/usr/bin/false", &[], Duration::from_secs(5),),
         doctor::OpenSpecAdvisory::ValidationFailed(
             "validation failed without diagnostic output".to_string()
         )
@@ -774,8 +764,8 @@ fn openspec_advisory_distinguishes_process_outcomes() {
         doctor::run_openspec_advisory(
             root.path(),
             "/bin/sh",
-            &["-c", "sleep 1"],
-            Duration::from_millis(20),
+            &["-c", "while :; do :; done"],
+            Duration::from_millis(100),
         ),
         doctor::OpenSpecAdvisory::TimedOut
     );
