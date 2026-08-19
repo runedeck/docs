@@ -91,8 +91,9 @@ impl TransactionIo for InjectedIo {
         if let Some((replacement_path, replacement_content)) = &self.replacement_before_quarantine
             && replacement_path == source
         {
-            fs::remove_file(source)?;
-            fs::write(source, replacement_content)?;
+            let staged = source.with_extension("injected-replacement");
+            fs::write(&staged, replacement_content)?;
+            fs::rename(&staged, source)?;
         }
         let is_archive_move = source.is_dir()
             && destination
