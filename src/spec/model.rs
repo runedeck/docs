@@ -167,7 +167,7 @@ impl CanonicalSpec {
         let remainder_start = requirement
             .content
             .find('\n')
-            .map_or(requirement.content.len(), |index| index);
+            .unwrap_or(requirement.content.len());
         let remainder = &requirement.content[remainder_start..];
         requirement.content = format!("### Requirement: {new_name}{remainder}");
         requirement.name = new_name.to_string();
