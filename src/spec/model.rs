@@ -119,8 +119,10 @@ impl CanonicalSpec {
     }
 
     pub(super) fn requirement_index(&self, name: &str) -> Option<usize> {
+        let identity = requirement_identity(name);
         self.body.iter().position(|element| {
-            matches!(element, BodyElement::Requirement(requirement) if requirement.name == name)
+            matches!(element, BodyElement::Requirement(requirement)
+                if requirement_identity(&requirement.name) == identity)
         })
     }
 
@@ -134,7 +136,7 @@ impl CanonicalSpec {
         requirement: &Requirement,
     ) -> bool {
         self.requirement(element_index).is_some_and(|existing| {
-            existing.name == requirement.name
+            requirement_identity(&existing.name) == requirement_identity(&requirement.name)
                 && existing.content
                     == normalize_line_endings(&requirement.content, &self.line_ending)
         })
@@ -252,6 +254,18 @@ impl CanonicalSpec {
 pub(super) struct ParseIssue {
     pub(super) line: Option<usize>,
     pub(super) message: String,
+}
+
+/// Requirement identity for lookups: case- and whitespace-insensitive,
+/// so a Title Case delta finds its sentence-case canonical twin instead
+/// of appending a duplicate. Equality checks that decide whether an
+/// edit applies keep exact comparison, so a case-only rename still
+/// lands.
+fn requirement_identity(name: &str) -> String {
+    name.split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_ascii_lowercase()
 }
 
 fn normalize_line_endings(content: &str, line_ending: &str) -> String {

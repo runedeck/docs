@@ -58,7 +58,9 @@ fn apply_renamed(
                 ),
             });
         };
-        if canonical.requirement_index(to).is_some() {
+        if let Some(target_index) = canonical.requirement_index(to)
+            && target_index != source_index
+        {
             return Err(ParseIssue {
                 line: Some(*line),
                 message: format!(
