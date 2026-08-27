@@ -1,0 +1,17 @@
+# Change tasks structure: numbered sections of checkbox items in the
+# `- [ ] N.M description` form.
+
+heading_rules:
+    max_depth: 2
+
+structure:
+    - heading:
+          pattern: "^## [0-9]+\\. .+"
+          regex: true
+      count:
+          min: 1
+      lists:
+          - min: 1
+      required_text:
+          - pattern: "^- \\[[ x]\\] [0-9]+\\.[0-9]+ "
+            regex: true

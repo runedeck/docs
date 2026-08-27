@@ -1,0 +1,35 @@
+# Change proposal structure: Why states the rationale, What Changes
+# and Impact list the observable effects, Capabilities names the
+# touched capability specs.
+
+frontmatter:
+    fields:
+        - name: status
+          type: string
+        - name: adr
+          type: string
+          optional: true
+
+heading_rules:
+    no_skip_levels: true
+    max_depth: 2
+
+structure:
+    - heading:
+          pattern: "^# .+"
+          regex: true
+      count:
+          max: 1
+      children:
+          - heading: "## Why"
+            word_count:
+                min: 10
+          - heading: "## What Changes"
+            lists:
+                - min: 1
+          - heading: "## Capabilities"
+            lists:
+                - min: 1
+          - heading: "## Impact"
+            lists:
+                - min: 1
