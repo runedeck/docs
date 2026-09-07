@@ -1,3 +1,9 @@
+---
+status: proposed
+---
+
+# Spec compatibility
+
 ## Why
 
 RuneSpec and OpenSpec offer similar specification workflows through different command interfaces. Routing one interface through the other would couple unrelated command grammars, and maintaining separate writable trees would create synchronization and review problems. One canonical artifact tree lets both CLIs operate on the same files with no conversion or mirror.
@@ -11,13 +17,8 @@ RuneSpec and OpenSpec offer similar specification workflows through different co
 
 ## Capabilities
 
-### New Capabilities
-
-- `spec-compatibility`: Defines the canonical store layout, the compatibility baseline, and the conditions a Rune-specific extension must satisfy to enter the shared tree.
-
-### Modified Capabilities
-
-None.
+- New capability `spec-compatibility`: Defines the canonical store layout, the compatibility baseline, and the conditions a Rune-specific extension must satisfy to enter the shared tree.
+- Modified capabilities: None.
 
 ## Impact
 

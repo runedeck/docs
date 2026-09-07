@@ -1,3 +1,9 @@
+---
+status: proposed
+---
+
+# Decision artifacts
+
 ## Why
 
 OpenSpec changes record design rationale but do not produce durable [Architectural Decision Records (ADRs)][ADR]. A shared decision-artifact contract lets compatible interfaces publish the same accepted record.
@@ -11,13 +17,8 @@ OpenSpec changes record design rationale but do not produce durable [Architectur
 
 ## Capabilities
 
-### New Capabilities
-
-- `decision-artifacts`: Defines decision declarations, publication, reconciliation, validation, and provenance within the OpenSpec canon.
-
-### Modified Capabilities
-
-None.
+- New capability `decision-artifacts`: Defines decision declarations, publication, reconciliation, validation, and provenance within the OpenSpec canon.
+- Modified capabilities: None.
 
 ## Impact
 
