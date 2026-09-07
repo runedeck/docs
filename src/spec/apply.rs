@@ -50,7 +50,7 @@ fn apply_renamed(
         let DeltaOperation::Renamed { from, to, line } = operation else {
             continue;
         };
-        let Some(source_index) = canonical.requirement_index(from) else {
+        let Some(source_index) = canonical.requirement_index(from, *line)? else {
             return Err(ParseIssue {
                 line: Some(*line),
                 message: format!(
@@ -58,7 +58,7 @@ fn apply_renamed(
                 ),
             });
         };
-        if let Some(target_index) = canonical.requirement_index(to)
+        if let Some(target_index) = canonical.requirement_index(to, *line)?
             && target_index != source_index
         {
             return Err(ParseIssue {
@@ -100,7 +100,7 @@ fn apply_removed(
         return Ok(());
     }
     for (name, line) in removals {
-        let Some(element_index) = canonical.requirement_index(name) else {
+        let Some(element_index) = canonical.requirement_index(name, line)? else {
             return Err(ParseIssue {
                 line: Some(line),
                 message: format!(
@@ -124,7 +124,9 @@ fn apply_modified(
         let DeltaOperation::Modified(requirement) = operation else {
             continue;
         };
-        let Some(element_index) = canonical.requirement_index(&requirement.name) else {
+        let Some(element_index) =
+            canonical.requirement_index(&requirement.name, requirement.line)?
+        else {
             return Err(ParseIssue {
                 line: Some(requirement.line),
                 message: format!(
@@ -170,7 +172,9 @@ fn apply_added(
         let DeltaOperation::Added(requirement) = operation else {
             continue;
         };
-        if let Some(element_index) = canonical.requirement_index(&requirement.name) {
+        if let Some(element_index) =
+            canonical.requirement_index(&requirement.name, requirement.line)?
+        {
             if canonical.requirement_matches(element_index, requirement) {
                 continue;
             }
