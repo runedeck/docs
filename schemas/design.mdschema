@@ -1,0 +1,23 @@
+# Change design structure: the approach with its beaten alternative,
+# and any further sections the change needs.
+
+heading_rules:
+    no_skip_levels: true
+    max_depth: 3
+
+structure:
+    - heading:
+          pattern: "^# .+"
+          regex: true
+      count:
+          max: 1
+      allow_additional: true
+      children:
+          - heading: "## Approach"
+            severity: warning
+            word_count:
+                min: 8
+          - heading: "## Structure"
+            optional: true
+          - heading: "## Risks"
+            optional: true

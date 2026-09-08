@@ -46,6 +46,13 @@ pub struct Sheet {
 }
 
 impl Sheet {
+    #[cfg(test)]
+    pub(crate) const fn plain() -> Self {
+        Self {
+            depth: Depth::Plain,
+        }
+    }
+
     pub fn detect() -> Self {
         let colored = !NO_COLOR.load(Ordering::Relaxed)
             && std::env::var_os("NO_COLOR").is_none()
@@ -106,4 +113,24 @@ impl Sheet {
 
 fn truecolor_terminal() -> bool {
     std::env::var("COLORTERM").is_ok_and(|value| value == "truecolor" || value == "24bit")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Sheet;
+
+    #[test]
+    fn plain_styles_preserve_text() {
+        let sheet = Sheet::plain();
+        for rendered in [
+            sheet.bold("text"),
+            sheet.dim("text"),
+            sheet.green("text"),
+            sheet.yellow("text"),
+            sheet.magenta("text"),
+        ] {
+            assert_eq!(rendered, "text");
+        }
+        assert_eq!(sheet.ok("done"), "   ✓ done");
+    }
 }

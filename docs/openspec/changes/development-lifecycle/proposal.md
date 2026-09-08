@@ -1,3 +1,9 @@
+---
+status: proposed
+---
+
+# Development lifecycle
+
 ## Why
 
 Rune changes have specifications, decisions, implementation work, tests, review, and delivery controls, but no shared lifecycle connects those phases or verifies that each transition reflects the maintainer's intent. A portable change workflow makes the complete path explicit while preserving human approval at every consequential boundary.
@@ -14,13 +20,8 @@ Rune changes have specifications, decisions, implementation work, tests, review,
 
 ## Capabilities
 
-### New Capabilities
-
-- `development-lifecycle`: Defines the portable, review-driven process that carries a change from specification to deployment.
-
-### Modified Capabilities
-
-None.
+- New capability `development-lifecycle`: Defines the portable, review-driven process that carries a change from specification to deployment.
+- Modified capabilities: None.
 
 ## Impact
 

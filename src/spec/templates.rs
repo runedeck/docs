@@ -26,3 +26,15 @@ pub(super) const DELTA_SPEC_MDSCHEMA: &str = include_str!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/schemas/delta-spec.mdschema"
 ));
+pub(super) const PROPOSAL_MDSCHEMA: &str = include_str!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/schemas/proposal.mdschema"
+));
+pub(super) const TASKS_MDSCHEMA: &str = include_str!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/schemas/tasks.mdschema"
+));
+pub(super) const DESIGN_MDSCHEMA: &str = include_str!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/schemas/design.mdschema"
+));

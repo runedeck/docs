@@ -285,6 +285,30 @@ fn nested_capabilities_are_discovered_validated_and_archived() {
 }
 
 #[test]
+fn change_artifacts_run_through_their_schemas() {
+    fn flag_every_file(_content: &str, file_path: &str, _schema: &str) -> Vec<MdschemaDiagnostic> {
+        vec![MdschemaDiagnostic {
+            file: file_path.to_string(),
+            line: None,
+            severity: DiagnosticSeverity::Warning,
+            message: "stub".to_string(),
+        }]
+    }
+    let root = TempDir::new().unwrap();
+    write_change(root.path(), "add-search", "- [ ] 1.1 pending\n", DELTA);
+
+    let diagnostics = validate_spec_tree(root.path(), flag_every_file).unwrap();
+    let codes: Vec<&str> = diagnostics
+        .iter()
+        .map(|diagnostic| diagnostic.code.as_str())
+        .collect();
+
+    assert!(codes.contains(&"delta-schema-invalid"));
+    assert!(codes.contains(&"proposal-schema-invalid"));
+    assert!(codes.contains(&"tasks-schema-invalid"));
+}
+
+#[test]
 fn abandon_stamps_frontmatter_and_does_not_merge() {
     let root = TempDir::new().unwrap();
     write_change(root.path(), "drop-search", "- [ ] unfinished\n", DELTA);
@@ -1152,7 +1176,7 @@ mod output_fixtures {
             }),
             "tests/fixtures/output/change-list.json",
         );
-        let sheet = crate::sheet::Sheet::detect();
+        let sheet = crate::sheet::Sheet::plain();
         assert_matches_fixture(
             &render_change_list(&summaries, &sheet),
             "tests/fixtures/output/change-list.txt",

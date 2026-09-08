@@ -3,7 +3,9 @@
 //! interop artifacts surfaced as warnings. One pipeline serves `validate`,
 //! archive preflight, and doctor, so acceptance cannot differ by command.
 
-use super::templates::{DELTA_SPEC_MDSCHEMA, SPEC_MDSCHEMA};
+use super::templates::{
+    DELTA_SPEC_MDSCHEMA, DESIGN_MDSCHEMA, PROPOSAL_MDSCHEMA, SPEC_MDSCHEMA, TASKS_MDSCHEMA,
+};
 use super::{
     DiagnosticSeverity, PrefixMatch, SpecRoot, SpecViolation, changes_root,
     discover_capabilities_below, evaluate_change, load_with_override, parse_canonical,
@@ -103,6 +105,19 @@ pub(super) fn validate_spec_target(
         "schemas/delta-spec.mdschema",
         DELTA_SPEC_MDSCHEMA,
     )?;
+    let (proposal_schema, _) =
+        load_with_override(repository, "schemas/proposal.mdschema", PROPOSAL_MDSCHEMA)?;
+    let (tasks_schema, _) =
+        load_with_override(repository, "schemas/tasks.mdschema", TASKS_MDSCHEMA)?;
+    let (design_schema, _) =
+        load_with_override(repository, "schemas/design.mdschema", DESIGN_MDSCHEMA)?;
+    let schemas = ChangeSchemas {
+        spec: &spec_schema,
+        delta: &delta_schema,
+        proposal: &proposal_schema,
+        tasks: &tasks_schema,
+        design: &design_schema,
+    };
     let mut diagnostics = Vec::new();
 
     match &target {
@@ -126,8 +141,7 @@ pub(super) fn validate_spec_target(
                 validate_change(
                     &spec_root,
                     &change_dir,
-                    &spec_schema,
-                    &delta_schema,
+                    &schemas,
                     false,
                     mdschema_check,
                     &mut diagnostics,
@@ -139,8 +153,7 @@ pub(super) fn validate_spec_target(
             validate_change(
                 &spec_root,
                 &spec_root.changes().join(change),
-                &spec_schema,
-                &delta_schema,
+                &schemas,
                 true,
                 mdschema_check,
                 &mut diagnostics,
@@ -273,11 +286,18 @@ fn validate_canonical(
     Ok(())
 }
 
+struct ChangeSchemas<'schemas> {
+    spec: &'schemas str,
+    delta: &'schemas str,
+    proposal: &'schemas str,
+    tasks: &'schemas str,
+    design: &'schemas str,
+}
+
 fn validate_change(
     spec_root: &SpecRoot,
     change_dir: &Path,
-    spec_schema: &str,
-    delta_schema: &str,
+    schemas: &ChangeSchemas<'_>,
     validate_referenced_canonical_schema: bool,
     mdschema_check: MdschemaCheck,
     diagnostics: &mut Vec<SpecViolation>,
@@ -301,7 +321,31 @@ fn validate_change(
                 change: Some(change),
             },
             &content,
-            delta_schema,
+            schemas.delta,
+            mdschema_check,
+            diagnostics,
+        );
+    }
+    for (artifact, schema, code) in [
+        ("proposal.md", schemas.proposal, "proposal-schema-invalid"),
+        ("tasks.md", schemas.tasks, "tasks-schema-invalid"),
+        ("design.md", schemas.design, "design-schema-invalid"),
+    ] {
+        let path = change_dir.join(artifact);
+        if !path.is_file() {
+            continue;
+        }
+        let content = read(&path)?;
+        append_schema_diagnostics(
+            SchemaDiagnosticContext {
+                repository: spec_root.repository(),
+                path: &path,
+                code,
+                capability: None,
+                change: Some(change),
+            },
+            &content,
+            schema,
             mdschema_check,
             diagnostics,
         );
@@ -319,7 +363,7 @@ fn validate_change(
                     change: Some(change),
                 },
                 &content,
-                spec_schema,
+                schemas.spec,
                 mdschema_check,
                 diagnostics,
             );
