@@ -156,9 +156,26 @@ pub(crate) struct Transaction<I: TransactionIo = SystemIo> {
     root: PathBuf,
     state_directory: PathBuf,
     journal_path: PathBuf,
-    _lock: File,
+    _lock: LockGuard,
     io: I,
     recovery: Option<RecoveryOutcome>,
+}
+
+struct LockGuard(File);
+
+impl LockGuard {
+    fn acquire(file: File) -> Result<Self, fs::TryLockError> {
+        file.try_lock()?;
+        Ok(Self(file))
+    }
+}
+
+impl Drop for LockGuard {
+    fn drop(&mut self) {
+        // A fork can retain another descriptor until exec.
+        // Release the shared lock when this guard leaves scope.
+        let _ = self.0.unlock();
+    }
 }
 
 /// The failure-injection seam, and the deliberate exception to RUST-0008
@@ -230,7 +247,7 @@ impl<I: TransactionIo> Transaction<I> {
             .truncate(false)
             .open(&lock_path)
             .map_err(|error| io_error("open", &lock_path, error))?;
-        lock.try_lock().map_err(|error| {
+        let lock = LockGuard::acquire(lock).map_err(|error| {
             let message = match error {
                 fs::TryLockError::WouldBlock => format!(
                     "another spec archive transaction holds {}; retry after it finishes",
@@ -614,18 +631,17 @@ pub(super) fn health_findings(
         Err(error) if error.kind() == io::ErrorKind::NotFound => None,
         Err(error) => return Err(io_error("open", &lock_path, error)),
     };
-    if let Some(lock) = &lock
-        && let Err(error) = lock.try_lock()
-    {
-        return match error {
-            fs::TryLockError::WouldBlock => Ok(vec![TransactionHealthFinding {
+    let lock = match lock.map(LockGuard::acquire).transpose() {
+        Ok(lock) => lock,
+        Err(fs::TryLockError::WouldBlock) => {
+            return Ok(vec![TransactionHealthFinding {
                 severity: super::DiagnosticSeverity::Warning,
                 path: LOCK_FILE.to_string(),
                 message: "another process holds the spec archive lock".to_string(),
-            }]),
-            fs::TryLockError::Error(error) => Err(io_error("lock", &lock_path, error)),
-        };
-    }
+            }]);
+        }
+        Err(fs::TryLockError::Error(error)) => return Err(io_error("lock", &lock_path, error)),
+    };
 
     let state_directory = root.join(TRANSACTION_DIRECTORY);
     if !state_directory.exists() {
@@ -655,7 +671,7 @@ fn incomplete_transaction_findings(
     root: PathBuf,
     state_directory: PathBuf,
     journal_path: PathBuf,
-    lock: File,
+    lock: LockGuard,
 ) -> Result<Vec<TransactionHealthFinding>, Error> {
     let content = fs::read_to_string(&journal_path)
         .map_err(|error| io_error("read", &journal_path, error))?;
