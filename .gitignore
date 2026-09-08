@@ -37,3 +37,6 @@ Cargo.lock
 
 # SpecStory writes transcripts to the working layer, not the repository.
 .specstory/
+
+# Python test bytecode stays local.
+__pycache__/
