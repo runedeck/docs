@@ -294,6 +294,62 @@ fn lock_contention_preserves_the_permanent_lock_file() {
 }
 
 #[test]
+fn transaction_drop_releases_lock_with_a_duplicated_descriptor() {
+    let fixture = transaction_fixture();
+    let transaction = acquire(&fixture.spec_root).unwrap();
+    let Transaction { _lock: lock, .. } = &transaction;
+    let inherited_descriptor = lock.0.try_clone().unwrap();
+    assert!(
+        acquire_error(&fixture)
+            .message()
+            .contains("another spec archive transaction")
+    );
+
+    drop(transaction);
+
+    let recovered = acquire(&fixture.spec_root).unwrap();
+    drop(inherited_descriptor);
+    assert!(
+        acquire_error(&fixture)
+            .message()
+            .contains("another spec archive transaction")
+    );
+    drop(recovered);
+}
+
+#[test]
+fn incomplete_health_releases_lock_on_error_before_transaction() {
+    let fixture = transaction_fixture();
+    let file = File::create(fixture.spec_root.base().join(LOCK_FILE)).unwrap();
+    let inherited_descriptor = file.try_clone().unwrap();
+    let lock = LockGuard::acquire(file).unwrap();
+    assert!(
+        acquire_error(&fixture)
+            .message()
+            .contains("another spec archive transaction")
+    );
+    let state_directory = fixture.spec_root.base().join(TRANSACTION_DIRECTORY);
+
+    let result = incomplete_transaction_findings(
+        &fixture.spec_root,
+        fixture.spec_root.base().to_path_buf(),
+        state_directory.clone(),
+        state_directory.join(JOURNAL_FILE),
+        lock,
+    );
+
+    assert!(result.is_err());
+    let recovered = acquire(&fixture.spec_root).unwrap();
+    drop(inherited_descriptor);
+    assert!(
+        acquire_error(&fixture)
+            .message()
+            .contains("another spec archive transaction")
+    );
+    drop(recovered);
+}
+
+#[test]
 fn prepared_recovery_discards_staged_state() {
     let fixture = fail_at_phase(Phase::Prepared);
 
