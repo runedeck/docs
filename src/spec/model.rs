@@ -118,10 +118,31 @@ impl CanonicalSpec {
         }
     }
 
-    pub(super) fn requirement_index(&self, name: &str) -> Option<usize> {
-        self.body.iter().position(|element| {
-            matches!(element, BodyElement::Requirement(requirement) if requirement.name == name)
-        })
+    pub(super) fn requirement_index(
+        &self,
+        name: &str,
+        line: usize,
+    ) -> Result<Option<usize>, ParseIssue> {
+        let identity = requirement_identity(name);
+        let mut found = None;
+        for (index, element) in self.body.iter().enumerate() {
+            let BodyElement::Requirement(requirement) = element else {
+                continue;
+            };
+            if requirement_identity(&requirement.name) != identity {
+                continue;
+            }
+            if found.is_some() {
+                return Err(ParseIssue {
+                    line: Some(line),
+                    message: format!(
+                        "ambiguous requirement identity '{name}' matches multiple requirements"
+                    ),
+                });
+            }
+            found = Some(index);
+        }
+        Ok(found)
     }
 
     pub(super) fn is_new_capability(&self) -> bool {
@@ -134,9 +155,12 @@ impl CanonicalSpec {
         requirement: &Requirement,
     ) -> bool {
         self.requirement(element_index).is_some_and(|existing| {
-            existing.name == requirement.name
-                && existing.content
-                    == normalize_line_endings(&requirement.content, &self.line_ending)
+            requirement_identity(&existing.name) == requirement_identity(&requirement.name)
+                && requirement_body(&existing.content)
+                    == requirement_body(&normalize_line_endings(
+                        &requirement.content,
+                        &self.line_ending,
+                    ))
         })
     }
 
@@ -252,6 +276,22 @@ impl CanonicalSpec {
 pub(super) struct ParseIssue {
     pub(super) line: Option<usize>,
     pub(super) message: String,
+}
+
+/// Requirement identity for lookups: case- and whitespace-insensitive,
+/// so a Title Case delta finds its sentence-case canonical twin instead
+/// of appending a duplicate. Equality checks that decide whether an
+/// edit applies keep exact comparison, so a case-only rename still
+/// lands.
+fn requirement_identity(name: &str) -> String {
+    name.split_whitespace()
+        .collect::<Vec<_>>()
+        .join(" ")
+        .to_ascii_lowercase()
+}
+
+fn requirement_body(content: &str) -> &str {
+    content.split_once('\n').map_or("", |(_, body)| body)
 }
 
 fn normalize_line_endings(content: &str, line_ending: &str) -> String {
