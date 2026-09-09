@@ -33,10 +33,12 @@ pub(super) fn apply_delta(
         summary: MergeSummary::default(),
         warnings: Vec::new(),
     };
-    apply_renamed(canonical, operations, capability, &mut result)?;
-    apply_removed(canonical, operations, capability, &mut result)?;
-    apply_modified(canonical, operations, capability, &mut result)?;
-    apply_added(canonical, operations, capability, &mut result)?;
+    let mut staged = canonical.clone();
+    apply_renamed(&mut staged, operations, capability, &mut result)?;
+    apply_removed(&mut staged, operations, capability, &mut result)?;
+    apply_modified(&mut staged, operations, capability, &mut result)?;
+    apply_added(&mut staged, operations, capability, &mut result)?;
+    *canonical = staged;
     Ok(result)
 }
 
