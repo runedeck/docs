@@ -40,3 +40,6 @@ Cargo.lock
 
 # Python test bytecode stays local.
 __pycache__/
+
+# Quarantine: rune repair and reseal move evidence here, never delete it
+.trash/

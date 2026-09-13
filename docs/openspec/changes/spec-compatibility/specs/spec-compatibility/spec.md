@@ -2,7 +2,7 @@
 
 ### Requirement: Canonical Store Layout
 
-A participating repository SHALL keep its only writable specification lifecycle tree at `docs/openspec/`, with `docs/.openspec-store/store.yaml` carrying a stable kebab-case store id and repository configuration carrying `spec.root: docs/openspec`.
+A participating repository MUST keep its only writable specification lifecycle tree at `docs/openspec/`, with `docs/.openspec-store/store.yaml` carrying a stable kebab-case store id and repository configuration carrying `spec.root: docs/openspec`.
 
 #### Scenario: Both interfaces resolve the same tree
 
@@ -16,7 +16,7 @@ A participating repository SHALL keep its only writable specification lifecycle 
 
 ### Requirement: Compatibility Baseline
 
-Shared artifacts SHALL remain valid for the pinned OpenSpec compatibility baseline, OpenSpec v1.7.0, and compatibility SHALL be demonstrated by running both CLIs against the same files.
+Shared artifacts MUST remain valid for the pinned OpenSpec compatibility baseline, OpenSpec v1.7.0, and compatibility MUST be demonstrated by running both CLIs against the same files.
 
 #### Scenario: Dual validation
 
@@ -30,7 +30,7 @@ Shared artifacts SHALL remain valid for the pinned OpenSpec compatibility baseli
 
 ### Requirement: Rune-Namespaced Extensions
 
-A Rune-specific artifact or runtime file SHALL enter the shared tree only when it uses an OpenSpec-defined field, is additive content OpenSpec preserves unchanged, or lives in a Rune-namespaced path that OpenSpec ignores and Rune validation excludes from OpenSpec compatibility claims; Rune runtime state (the transaction journal, the archive lock, and the `.interop/` recovery mirror) SHALL remain gitignored.
+A Rune-specific artifact or runtime file MUST enter the shared tree only when it uses an OpenSpec-defined field, is additive content OpenSpec preserves unchanged, or lives in a Rune-namespaced path that OpenSpec ignores and Rune validation excludes from OpenSpec compatibility claims; Rune runtime state (the transaction journal, the archive lock, and the `.interop/` recovery mirror) MUST remain gitignored.
 
 #### Scenario: Runtime state stays untracked
 
