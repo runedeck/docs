@@ -98,7 +98,7 @@ After decision acceptance, the lifecycle enters the harness's planning mode or c
 
 Failed verification is normal implementation feedback. The lifecycle diagnoses and fixes failures within the approved approach, then reruns the relevant checks. A fix that changes scope or architecture returns to user verification.
 
-Validation success permits an approval question; it never answers one. Plan approval does not authorize implementation publication, staged-change approval does not authorize pull-request creation, pull-request creation does not authorize merge, and merge approval does not authorize a separate release or installation.
+Validation success permits an approval question. It never answers one. Plan approval does not authorize implementation publication, staged-change approval does not authorize pull-request creation, pull-request creation does not authorize merge, and merge approval does not authorize a separate release or installation.
 
 A decision draft that introduces newer intent reopens the specification. The lifecycle applies that intent to the requirements and scenarios, reruns validation and tailored review, and keeps the decision provisional until both artifacts agree. A code or test finding returns the lifecycle to implementation. Pull-request feedback returns it to the affected phase rather than being patched outside the artifact chain.
 
@@ -106,7 +106,7 @@ A decision draft that introduces newer intent reopens the specification. The lif
 
 Deployment is the point at which the reviewed result reaches its intended destination. For software this may be a release or installation. For documentation it is the merge that makes the files visible in the target GitHub repository.
 
-When merge itself performs deployment, one explicit merge approval covers that action; the lifecycle does not ask again for the same publication. The skill verifies destination-specific evidence before checking deployment complete. A separate release or installation retains its own approval boundary.
+When merge itself performs deployment, one explicit merge approval covers that action. The lifecycle does not ask again for the same publication. The skill verifies destination-specific evidence before checking deployment complete. A separate release or installation retains its own approval boundary.
 
 ### Resume derives state from durable systems
 

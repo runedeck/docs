@@ -44,7 +44,7 @@ Drafts already use the canonical ADR structure and `status: proposed`. Draft cre
 
 The `id` field carries the identifier. Filenames are kebab-case titles, and records are published under `<decisions-root>/<category>/`. The identifier is a permanent handle, never a sort key, so a record is never renumbered to make room for another and gaps in a series are expected.
 
-Category subdirectories give topical navigation; ordering, status views, and relationship graphs are built from frontmatter rather than from directory listings. Numbering the filename was rejected because it forces renumber pressure and makes concurrent branches collide on the same prefix.
+Category subdirectories give topical navigation. Ordering, status views, and relationship graphs are built from frontmatter rather than from directory listings. Numbering the filename was rejected because it forces renumber pressure and makes concurrent branches collide on the same prefix.
 
 ### Publication supports two archive modes
 
@@ -70,9 +70,9 @@ ADR creation, import, archive publication, and reconciliation coordinate allocat
 
 ## Risks / Trade-offs
 
-- Preserving archive leaves decisions unpublished until reconciliation; health output makes this state visible.
-- Workflow-schema copies can drift from canonical templates; byte comparison makes drift detectable.
-- Required decisions add ceremony to maintenance work; the reasoned exemption keeps omission explicit.
+- Preserving archive leaves decisions unpublished until reconciliation. Health output makes this state visible.
+- Workflow-schema copies can drift from canonical templates. Byte comparison makes drift detectable.
+- Required decisions add ceremony to maintenance work. The reasoned exemption keeps omission explicit.
 - Repository-scoped publication expands transaction recovery beyond specification-root writes.
 
 ## Migration Plan

@@ -50,11 +50,11 @@ Chosen option: **Deterministic standalone orchestration**, because equivalent re
 
 `DevelopmentLifecycle` coordinates the grouped process ADRs as the default path for substantive changes. The skill defines a closed phase set with entry, completion, transition, and invalidation predicates.
 
-Ordered read-only `!` probes collect live state using standard project and platform tools. Supporting harnesses inject their output before execution; other harnesses gather equivalent context during orientation. The skill never invokes the Rune CLI.
+Ordered read-only `!` probes collect live state using standard project and platform tools. Supporting harnesses inject their output before execution. Other harnesses gather equivalent context during orientation. The skill never invokes the Rune CLI.
 
 Every phase selection reports the matched predicate, supporting evidence, and proposed transition. Valid absent states use stable sentinel output. Failed required probes stop selection rather than permitting inferred state.
 
-Task checkpoints record user approvals and verified outcomes. Version-control history verifies that accepted artifacts remain unchanged; later changes clear the affected checkpoint and every dependent checkpoint. Resume starts at the earliest incomplete or invalid phase.
+Task checkpoints record user approvals and verified outcomes. Version-control history verifies that accepted artifacts remain unchanged. Later changes clear the affected checkpoint and every dependent checkpoint. Resume starts at the earliest incomplete or invalid phase.
 
 The skill uses each harness's structured question function or an equivalent bounded plain-text question. It remains in a user-facing context for approval transitions. Every approval displays the complete artifact, diff, plan, pull-request text, or outward-facing action through a full review surface.
 

@@ -23,5 +23,5 @@ RuneSpec and OpenSpec offer similar specification workflows through different co
 ## Impact
 
 - Repositories adopting the layout move existing lifecycle directories into `docs/openspec/` without content transformation.
-- Both validators run against the same tree during rollout; a repository is compatible only when both pass.
+- Both validators run against the same tree during rollout. A repository is compatible only when both pass.
 - RuneSpec keeps every current command, flag, output form, root mode, transaction path, and public API.

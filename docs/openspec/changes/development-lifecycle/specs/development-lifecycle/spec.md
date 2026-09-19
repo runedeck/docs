@@ -122,7 +122,7 @@ Decision artifacts MUST begin from the accepted specification. When a decision d
 
 ### Requirement: Testing and review provide completion evidence
 
-Implementation MUST produce test or verification evidence appropriate to the changed behavior. Changes MUST be staged for user review before commit. Staged-change approval MUST NOT authorize pull-request creation; publication through a pull request requires a separate user decision and MUST retain its required review and continuous-integration checks.
+Implementation MUST produce test or verification evidence appropriate to the changed behavior. Changes MUST be staged for user review before commit. Staged-change approval MUST NOT authorize pull-request creation. Publication through a pull request requires a separate user decision and MUST retain its required review and continuous-integration checks.
 
 #### Scenario: Verification fails
 

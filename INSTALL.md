@@ -28,6 +28,6 @@ done
 make validate
 ```
 
-Without Homebrew, install each missing tool with the platform's package manager; `gitleaks` needs the upstream release (the Debian and Ubuntu package is too old for `gitleaks git`).
+Without Homebrew, install each missing tool with the platform's package manager. `gitleaks` needs the upstream release (the Debian and Ubuntu package is too old for `gitleaks git`).
 
 EXECUTE NOW: Complete the above TODO list to achieve: hooks wired and `make validate` green.

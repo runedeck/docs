@@ -144,7 +144,7 @@ Repository setup registers the existing nested store:
 openspec store register ./docs --id <repository-store-id> --yes
 ```
 
-The setup path uses `store register`, not `store setup`. OpenSpec v1.7.0 exposes `--id` and `--yes`; `--yes` authorizes identity metadata creation for a healthy existing root.[OPENSTORECMD] Registration records the canonical path in OpenSpec's machine-local registry. Ordinary RuneSpec and OpenSpec commands do not modify another registration automatically.[OPENSTORE]
+The setup path uses `store register`, not `store setup`. OpenSpec v1.7.0 exposes `--id` and `--yes`. `--yes` authorizes identity metadata creation for a healthy existing root.[OPENSTORECMD] Registration records the canonical path in OpenSpec's machine-local registry. Ordinary RuneSpec and OpenSpec commands do not modify another registration automatically.[OPENSTORE]
 
 ### Direct use
 
@@ -229,7 +229,7 @@ A store ID registered to another canonical path is an error. Setup reports the c
 
 ### Path safety
 
-RuneSpec continues to reject absolute roots, parent traversal, and symlink escapes through canonical path confinement. OpenSpec receives the real filesystem layout directly; Rune does not construct or interpolate OpenSpec commands.
+RuneSpec continues to reject absolute roots, parent traversal, and symlink escapes through canonical path confinement. OpenSpec receives the real filesystem layout directly. Rune does not construct or interpolate OpenSpec commands.
 
 ### Artifact extensions
 
@@ -242,7 +242,7 @@ A proposed Rune-specific artifact extension cannot enter the common tree until a
 - Run RuneSpec and the pinned OpenSpec CLI against the same canonical specifications, active changes, archived changes, tasks, metadata, and nested capabilities.
 - Cover every delta operation, fenced examples, task progress, nested capability paths, and UTF-8 BOM input supported by the compatibility baseline.[OPENREL]
 - Alternate mutations between the two CLIs and verify that the other can read and validate the result without conversion.
-- Add an interrupted-operation fixture containing `.rune-transaction/journal.yaml` and `.rune-archive.lock`; verify OpenSpec validation and interactive view safely ignore the runtime state.
+- Add an interrupted-operation fixture containing `.rune-transaction/journal.yaml` and `.rune-archive.lock`. Verify OpenSpec validation and interactive view safely ignore the runtime state.
 
 ### RuneSpec regression
 
