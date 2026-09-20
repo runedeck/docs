@@ -1,27 +1,25 @@
+# The stack baseline. Copier seeds this file once and the consumer owns it,
+# so add repository patterns below the line; the parity audit checks that
+# every pattern here is still present.
+
+# Build and assembly output
 build/
 dist/
-target/
-Cargo.lock
 .DS_Store
 
-# rune-deployed provider trees and review comments
+# rune-deployed provider trees and review comments: rune install output,
+# never source
 .claude/
 .codex/
 .gemini/
 .opencode/
+.agents/
 .rune-comments.yaml
 
-# Harness integrations written by tool installers. .cursor/BUGBOT.md is
-# authored review guidance and stays tracked.
-.agent/
-.pi/
-.cursor/*
-!.cursor/BUGBOT.md
-
-# RuneSpec runtime state inside the shared lifecycle tree: transaction
-# journal, archive lock, and interop recovery mirror.
-.rune-archive.lock
+# rune spec runtime state: the transaction journal, the archive lock, and
+# the OpenSpec ownership mirror
 .rune-transaction/
+.rune-archive.lock
 .interop/
 
 # Parallel work, one isolated tree per agent: jj workspaces where the repo is
@@ -31,15 +29,33 @@ Cargo.lock
 .workspaces/
 .worktrees/
 
+# Quarantine: rune repair, reseal, and abandon move evidence here, never
+# delete it
+.trash/
+
 # Entire session data (runtime, not source). The hooks Entire installs into
 # .githooks/ are tracked source; only its runtime data here is ignored.
 .entire/
 
-# SpecStory writes transcripts to the working layer, not the repository.
-.specstory/
+# SpecStory writes transcripts to the working layer, not the repository; its
+# tracked files are the project binding and configuration only.
+.specstory/history/
+.specstory/debug/
 
-# Python test bytecode stays local.
+# Tool caches
 __pycache__/
+.ruff_cache/
+.rumdl_cache/
 
-# Quarantine: rune repair and reseal move evidence here, never delete it
-.trash/
+# Secrets and user overrides
+.env
+config.yaml
+
+# --- repository patterns below ---
+target/
+Cargo.lock
+.agent/
+.pi/
+.cursor/*
+!.cursor/BUGBOT.md
+.specstory/
