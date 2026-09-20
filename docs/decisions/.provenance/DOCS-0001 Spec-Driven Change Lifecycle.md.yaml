@@ -1,0 +1,45 @@
+provenance:
+  _type: https://in-toto.io/Statement/v1
+  predicateType: https://slsa.dev/provenance/v1
+  subject:
+  - name: docs/decisions/DOCS-0001 Spec-Driven Change Lifecycle.md
+    digest:
+      sha256: a4ac81b50ccdb1503de71b124585c8831998031b8c1b6ce9e263b6b714c8928c
+  predicate:
+    buildDefinition:
+      buildType: adopt/v1
+      externalParameters:
+        source: ''
+        upstream_url: https://github.com/runedeck/deck/blob/main/docs/decisions/CORE-0019%20Spec-Driven%20Change%20Lifecycle.md
+        upstream_commit: ''
+        transforms_applied:
+        - align
+      resolvedDependencies:
+      - name: upstream
+        uri: https://github.com/runedeck/deck/blob/main/docs/decisions/CORE-0019%20Spec-Driven%20Change%20Lifecycle.md
+        digest:
+          sha256: 0facb9e506e60e620b4ceac1f4db6e1a5175508cf7520b883a70e375dc17ba64
+    runDetails:
+      builder:
+        id: rune-cli
+        version:
+          rune: 0.5.0
+      metadata:
+        startedOn: 2026-09-20T21:13:01.155181+00:00
+        review: reviewed
+        reviewer: Martin Zeman <N4M3Z@users.noreply.github.com>
+        completedOn: 2026-09-20T21:15:14.351298+00:00
+        summary: 8 keep, 4 adapt
+        replacements:
+        - block: DOCS-0001 Spec-Driven Change Lifecycle.md:1
+          sha256: 1926bcbd5432da97e675c18294308ccb4e53e7b2c18c85742c9dfc17aef3acec
+          path: replacements/1926bcbd5432da97e675c18294308ccb4e53e7b2c18c85742c9dfc17aef3acec
+        - block: DOCS-0001 Spec-Driven Change Lifecycle.md:4
+          sha256: fca68cfdd67ee2f9e9f41d369824a4c4d99d70b649cd9d82988d74b0b0e76ae1
+          path: replacements/fca68cfdd67ee2f9e9f41d369824a4c4d99d70b649cd9d82988d74b0b0e76ae1
+        - block: DOCS-0001 Spec-Driven Change Lifecycle.md:9
+          sha256: 83b7f4d9a3afcde4742e2b874c7315d19369df708e3267924ec42ad0da9c168f
+          path: replacements/83b7f4d9a3afcde4742e2b874c7315d19369df708e3267924ec42ad0da9c168f
+        - block: DOCS-0001 Spec-Driven Change Lifecycle.md:11
+          sha256: b4c5b667b78a7b2119bf6fbf679d85fc29684e877ea5d37d0e826f2bd2e7f9e9
+          path: replacements/b4c5b667b78a7b2119bf6fbf679d85fc29684e877ea5d37d0e826f2bd2e7f9e9

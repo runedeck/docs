@@ -42,6 +42,13 @@ Before asking for approval, the lifecycle MUST present the exact artifact, diff,
 
 The canonical `DevelopmentLifecycle` skill body MUST contain ordered dynamic context injection (`!`) probes using read-only, non-interactive, secret-free commands. The commands MUST use standard project and platform tools and MUST NOT invoke the Rune CLI. A supporting harness executes the probes before skill execution. A harness that ignores inline injection MUST gather equivalent context during orientation before selecting a phase.
 
+#### Scenario: Harness without inline injection
+
+- **WHEN** a harness does not run `!` probes inline
+- **THEN** the skill gathers the same context during orientation before it selects a phase
+
+### Requirement: Phase selection is deterministic and evidenced
+
 The skill MUST define a closed phase set with explicit entry, completion, transition, and invalidation predicates. The same artifacts and probe output MUST produce the same current phase and proposed next action. Every selection MUST report the matched predicate, supporting evidence, and proposed transition. Each probe MUST distinguish a valid absent state from execution failure through stable output. A failed required probe MUST stop orientation and identify the missing context instead of allowing inferred state.
 
 The skill MUST remain usable when shared outside Rune or the Rune Deck directory layout.

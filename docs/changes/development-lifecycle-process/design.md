@@ -1,6 +1,6 @@
 ## Context
 
-See `proposal.md` for motivation and `specs/development-lifecycle/spec.md` for observable behavior.
+See `proposal.md` for motivation and `specs/development-lifecycle-process/spec.md` for observable behavior.
 
 Rune already has independent specification interfaces, decision artifacts, implementation planning practices, test commands, staged review, pull-request checks, and publication mechanisms. They do not yet form one resumable process. The deck's `development` domain is reserved for review flow, verification, commit conventions, and delivery discipline, so it owns the coordinating skill.
 

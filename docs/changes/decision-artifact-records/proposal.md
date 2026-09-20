@@ -17,7 +17,7 @@ OpenSpec changes record design rationale but do not produce durable [Architectur
 
 ## Capabilities
 
-- New capability `decision-artifacts`: Defines decision declarations, publication, reconciliation, validation, and provenance within the OpenSpec canon.
+- New capability `decision-artifact-records`: Defines decision declarations, publication, reconciliation, validation, and provenance within the OpenSpec canon.
 - Modified capabilities: None.
 
 ## Impact

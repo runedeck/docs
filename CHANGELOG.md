@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Change every changelog entry to one verb-first line, as `rune docs check` requires.
+- Change the spec tree root from `docs/openspec/` to the native `docs/`, rename five two-word ids, and adopt the spec-driven lifecycle decision as `DOCS-0001`.
+- Remove the `spec.root` override and OpenSpec's `config.yaml`, and archive `openspec-store-compatibility` as abandoned.
 
 ## [0.1.0] - 2026-07-25
 

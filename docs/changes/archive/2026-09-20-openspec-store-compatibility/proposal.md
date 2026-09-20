@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: abandoned
 ---
 
 # Spec compatibility
@@ -17,7 +17,7 @@ RuneSpec and OpenSpec offer similar specification workflows through different co
 
 ## Capabilities
 
-- New capability `spec-compatibility`: Defines the canonical store layout, the compatibility baseline, and the conditions a Rune-specific extension must satisfy to enter the shared tree.
+- New capability `openspec-store-compatibility`: Defines the canonical store layout, the compatibility baseline, and the conditions a Rune-specific extension must satisfy to enter the shared tree.
 - Modified capabilities: None.
 
 ## Impact

@@ -1,0 +1,5 @@
+name: rune-docs
+version: 0.1.0
+type: library
+description: "The docs crate behind rune spec, rune adr, and rune docs: the spec-driven change lifecycle, decision records, and the docs checks"
+events: []

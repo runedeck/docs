@@ -16,10 +16,6 @@ A model ID MUST contain lowercase ASCII alphanumeric segments separated by dots 
 The domain MUST match an approved `<harness>.noreply.nexus.local` entry exactly.
 New model versions under approved domains MUST require no catalog update.
 Human identities and vendor aliases MUST remain exact policy entries.
-Identity resolution MUST prefer an exact model ID within the selected harness before canonical aliases.
-It MUST remove a trailing `[1m]` annotation before this comparison.
-Matches across multiple harnesses MUST require an explicit harness.
-Multiple exact matches within one harness MUST fail as ambiguous.
 
 #### Scenario: Future version
 
@@ -30,6 +26,13 @@ Multiple exact matches within one harness MUST fail as ambiguous.
 
 - **WHEN** the model IDs differ or the domain adds a suffix to an approved domain
 - **THEN** the check rejects the identity
+
+### Requirement: Model Identity Resolution
+
+Identity resolution MUST prefer an exact model ID within the selected harness before canonical aliases.
+It MUST remove a trailing `[1m]` annotation before this comparison.
+Matches across multiple harnesses MUST require an explicit harness.
+Multiple exact matches within one harness MUST fail as ambiguous.
 
 #### Scenario: Current and legacy model IDs coexist
 
@@ -69,17 +72,17 @@ The check MUST reject malformed policy before it examines the commit range.
 CI MUST execute the checker and helper from the exact pull request base checkout.
 CI MUST use the policy from that same checkout.
 CI MUST inspect every commit from the merge base to the pull request head, including merge commits.
-Local pre-push checks MUST use the same checker with `origin/main:authors.yaml`.
-For an orphan branch, they MUST inspect every commit reachable from the supplied head.
-Target selection MUST prefer `--to-ref`, `PRE_COMMIT_TO_REF`, `GITLEAKS_PUSH_TO_REF`, then `HEAD`.
-The check MUST fail when policy, commit references, or history reads fail.
-Head changes MUST NOT authorize their own identities or replace CI checker code.
-Authorship source and policy changes MUST receive the existing specification-presence check.
 
 #### Scenario: Head policy change
 
 - **WHEN** a head adds its own unapproved domain or changes the checker
 - **THEN** CI uses base code and base policy to evaluate that head
+
+### Requirement: Local Range and Target Selection
+
+Local pre-push checks MUST use the same checker with `origin/main:authors.yaml`.
+For an orphan branch, they MUST inspect every commit reachable from the supplied head.
+Target selection MUST prefer `--to-ref`, `PRE_COMMIT_TO_REF`, `GITLEAKS_PUSH_TO_REF`, then `HEAD`.
 
 #### Scenario: Local outgoing range
 
@@ -95,6 +98,17 @@ Authorship source and policy changes MUST receive the existing specification-pre
 
 - **WHEN** the caller supplies `--to-ref` and an environment target
 - **THEN** the check validates the explicit target
+
+### Requirement: Check Failure and Head Isolation
+
+The check MUST fail when policy, commit references, or history reads fail.
+Head changes MUST NOT authorize their own identities or replace CI checker code.
+Authorship source and policy changes MUST receive the existing specification-presence check.
+
+#### Scenario: Head rewrites the checker
+
+- **WHEN** a pull request head edits the checker, the helper, or `authors.yaml`
+- **THEN** CI still judges it with the base checkout's copies and the specification-presence check applies
 
 ### Requirement: Contributor Identity
 

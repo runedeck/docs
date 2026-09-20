@@ -20,7 +20,7 @@ Rune changes have specifications, decisions, implementation work, tests, review,
 
 ## Capabilities
 
-- New capability `development-lifecycle`: Defines the portable, review-driven process that carries a change from specification to deployment.
+- New capability `development-lifecycle-process`: Defines the portable, review-driven process that carries a change from specification to deployment.
 - Modified capabilities: None.
 
 ## Impact
