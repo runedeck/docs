@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Change the correctness caller to skeleton `5e4657bf`: the controller runs on every same-repository push, draft or ready, so the green draft starts the review round.
 - Change the ceremony files to skeleton `60ad8249` through `copier update`: owner-seal and verify-seal messages and nonce, jq guards, versioned display names, `thread-resolver.yaml` retired.
 - Change every changelog entry to one verb-first line, as `rune docs check` requires.
 - Change the spec tree root from `docs/openspec/` to the native `docs/`, rename five two-word ids, and adopt the spec-driven lifecycle decision as `DOCS-0001`.
