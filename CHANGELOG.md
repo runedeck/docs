@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Change the spec tree root from `docs/openspec/` to the native `docs/`, rename five two-word ids, and adopt the spec-driven lifecycle decision as `DOCS-0001`.
 - Remove the `spec.root` override and OpenSpec's `config.yaml`, and archive `openspec-store-compatibility` as abandoned.
 
+### Fixed
+
+- Fix the identity tests to expect the versioned display names the synced `author-identity.py` derives (`Claude Fable 5.2`, not `Claude`).
+
 ## [0.1.0] - 2026-07-25
 
 ### Added

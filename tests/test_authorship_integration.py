@@ -577,7 +577,8 @@ class AuthorshipIntegrationTests(unittest.TestCase):
                 )
                 self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
                 self.assertEqual(
-                    result.stdout.strip(), model_identity("future-model-2035.12")
+                    result.stdout.strip(),
+                    model_identity("future-model-2035.12", display="Codex Future Model 2035.12"),
                 )
                 head = self.new_head(result.stdout.strip())
                 self.assert_checks(head, passes=True)
