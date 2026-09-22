@@ -4,5 +4,5 @@ BRIEF: 'Documentation lifecycle for rune: docs link checks, ADRs, and spec-drive
 NAME: docs
 OWNER: runedeck
 TITLE: Rune Docs
-_commit: 5e4657b
+_commit: 6374d8f
 _src_path: https://github.com/runedeck/skeleton.git
